@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
@@ -15,6 +16,7 @@ public class Player : MonoBehaviour
     private float targetVelocity;
     private Rigidbody2D rb;
     private const float power = 10f;
+    private bool isGravityUpward;
     
    
     private void Start()
@@ -23,6 +25,8 @@ public class Player : MonoBehaviour
         targetVelocityAtStart = 3f;
         rb = GetComponent<Rigidbody2D>();
         targetVelocity = targetVelocityAtStart;
+        isGravityUpward = false;
+        SetGravity();
     }
 
     private void IncreaseTargetVelocity()
@@ -30,20 +34,36 @@ public class Player : MonoBehaviour
         targetVelocity += accelerationByTime;
     }
 
-    private void MoveForward()
+    private void Move()
     {
-        rb.AddForce(Vector2.right*((targetVelocity-rb.velocity.x) * power), ForceMode2D.Force);
+        float x = (targetVelocity - rb.velocity.x) * power;
+        rb.AddForce(new Vector2(x, 0), ForceMode2D.Force);
     }
     
     private void FixedUpdate()
     {
-        if (gameManager.GameState == GameState.Playing)
-        {
-            MoveForward();
-            IncreaseTargetVelocity();
-        }
-
-        Debug.Log(rb.velocity);
+        if (gameManager.GameState != GameState.Playing) return;
+        Move();
+        IncreaseTargetVelocity();
+    }
+    
+    private void SetGravity()
+    {
+        rb.gravityScale = isGravityUpward ? -5 : 5;
+    }
+    private void ChangeGravity()
+    {
+        isGravityUpward = !isGravityUpward;
+        SetGravity();
     }
 
+    private void Update()
+    {
+        if (gameManager.GameState != GameState.Playing) return;
+        if (Input.GetMouseButtonDown(0))
+        {
+            ChangeGravity();
+        }
+
+    }
 }
