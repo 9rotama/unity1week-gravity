@@ -15,18 +15,10 @@ public class StageGenerator : MonoBehaviour
 
     // key:オブジェクトのタイプ、value:規定のオブジェクトのサイズをしてした配列
     // 配列要素使い回して負荷を下げる
-    Dictionary<StageObjectType, StageObject[]> stageObjectsMap = new Dictionary<StageObjectType, StageObject[]>
-    {
-        {StageObjectType.SimpleBlock, new StageObject[50]},
-        {StageObjectType.HogeBlock, new StageObject[50]},
-    };
+    Dictionary<StageObjectType, StageObject[]> stageObjectsMap = new Dictionary<StageObjectType, StageObject[]>();
 
     // ステージオブジェクト配列それぞれの再生成するさいの添字
-    Dictionary<StageObjectType, long> indexRegeneratingMap = new Dictionary<StageObjectType, long>
-    {
-        {StageObjectType.SimpleBlock, 0},
-        {StageObjectType.HogeBlock, 0},
-    };
+    Dictionary<StageObjectType, long> indexRegeneratingMap = new Dictionary<StageObjectType, long>();
 
     // 地面の生成間隔
     float groundInterval; 
@@ -40,10 +32,17 @@ public class StageGenerator : MonoBehaviour
 
         // ステージオブジェクトの生成、配列に代入
         foreach(StageObjectType type in Enum.GetValues(typeof(StageObjectType))) {
+            stageObjectsMap[type] = new StageObject[50];
+
             for(var i=0; i<stageObjectsMap[type].Length; i++) {
                 stageObjectsMap[type][i] = Instantiate(stageObjectOverview[(int)type]);
             }
+
+            // 添字番号を0に初期化
+            indexRegeneratingMap.Add(type, 0);
         }
+
+
 
         // シンプルなブロックのサイズに合わせる
         groundInterval = stageObjectOverview[(int)StageObjectType.SimpleBlock].objectSize.x;
@@ -60,21 +59,42 @@ public class StageGenerator : MonoBehaviour
 
         int limit = Mathf.FloorToInt(playerTransform.position.x / groundInterval);
 
+        Debug.Log(groundInterval);
+
         // 基準値に合わせてオブジェクトを生成
         // while文でオブジェクトの抜け穴を防ぐ
         while(generationBaseValue < limit) {
+            
             var type = StageObjectType.SimpleBlock;
-            Vector2 generationPos = new Vector2(generationBaseValue * groundInterval + addition, stageObjectOverview[(int)type].GetLimitYPos().max /*Random.Range(0,2) == 0 ? minSpawnYPos : maxSpawnYPos*/);
+            Vector2 generationPos = new Vector2(generationBaseValue * groundInterval + addition, stageObjectOverview[(int)type].GetLimitYPos().max /*UnityEngine.Random.Range(0,2) == 0 ? stageObjectOverview[(int)type].GetLimitYPos().max : stageObjectOverview[(int)type].GetLimitYPos().min*/);
             Generate(generationPos, type);
 
-            type = StageObjectType.HogeBlock;
-            generationPos = new Vector2(generationBaseValue * groundInterval + addition, stageObjectOverview[(int)type].GetLimitYPos().min /*Random.Range(0,2) == 0 ? minSpawnYPos : maxSpawnYPos*/);
+            generationPos = new Vector2(generationBaseValue * groundInterval + addition, UnityEngine.Random.Range(0,2) == 0 ? stageObjectOverview[(int)type].GetLimitYPos().min : stageObjectOverview[(int)type].GetLimitYPos().min);
             Generate(generationPos, type);
+            
+            var num = UnityEngine.Random.Range(0,20);
+            if(num == 0){
+                GenerateVerticalDoubleBlock(new Vector2( generationBaseValue * groundInterval + addition, stageObjectOverview[(int)type].GetLimitYPos().max));
+            } else if(num == 1) {
+                GenerateVerticalTripleBlock(new Vector2( generationBaseValue * groundInterval + addition, stageObjectOverview[(int)type].GetLimitYPos().max));
+            }
 
             ++generationBaseValue;
         }
 
 
+    }
+    void GenerateVerticalTripleBlock(Vector2 pos){
+        var type = StageObjectType.SimpleBlock;
+        Generate(pos, type);
+        Generate(pos + Vector2.up * stageObjectOverview[(int)type].objectSize.y, type);
+        Generate(pos + Vector2.up * stageObjectOverview[(int)type].objectSize.y * 2, type);
+    }
+
+    void GenerateVerticalDoubleBlock(Vector2 pos){
+        var type = StageObjectType.SimpleBlock;
+        Generate(pos, type);
+        Generate(pos + Vector2.up * stageObjectOverview[(int)type].objectSize.y, type);
     }
 
     // タイプに応じてゲームオブジェクトをpos座標に生成（再配置）

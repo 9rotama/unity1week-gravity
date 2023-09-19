@@ -39,6 +39,7 @@ public class Player : MonoBehaviour
     {
         float x = (targetVelocity - rb.velocity.x) * power;
         rb.AddForce(new Vector2(x, 0), ForceMode2D.Force);
+        Debug.Log(rb.velocity);
     }
     
     private void FixedUpdate()
@@ -62,7 +63,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         if (gameManager.GameState != GameState.Playing) return;
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
             ChangeGravity();
         }
@@ -70,10 +71,8 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.gameObject);
-        if (collision.gameObject.CompareTag("Floor"))
-        {
-            SEManager.Instance.Play(SEPath.HIT_FLOOR);
-        }
+        var stageObject = collision.gameObject.GetComponent<StageObject>();
+        stageObject?.OnCollisionWithPlayer(this);
+
     }
 }

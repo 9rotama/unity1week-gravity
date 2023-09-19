@@ -1,5 +1,5 @@
 public enum StageObjectType
 {
     SimpleBlock,
-    HogeBlock,
+    // HogeBlock,
 }
