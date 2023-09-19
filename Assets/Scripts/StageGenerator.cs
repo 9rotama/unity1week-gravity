@@ -64,11 +64,11 @@ public class StageGenerator : MonoBehaviour
         // while文でオブジェクトの抜け穴を防ぐ
         while(generationBaseValue < limit) {
             var type = StageObjectType.SimpleBlock;
-            Vector2 generationPos = new Vector2(generationBaseValue * groundInterval + addition, stageObjectOverview[(int)type].GetLimitYPos().max /*Random.Range(0,2) == 0 ? minSpawnYPos : maxSpawnYPos*/);
+            Vector2 generationPos = new Vector2(generationBaseValue * groundInterval + addition, UnityEngine.Random.Range(0,2) == 0 ? stageObjectOverview[(int)type].GetLimitYPos().max : stageObjectOverview[(int)type].GetLimitYPos().min);
             Generate(generationPos, type);
 
             type = StageObjectType.HogeBlock;
-            generationPos = new Vector2(generationBaseValue * groundInterval + addition, stageObjectOverview[(int)type].GetLimitYPos().min /*Random.Range(0,2) == 0 ? minSpawnYPos : maxSpawnYPos*/);
+            generationPos = new Vector2(generationBaseValue * groundInterval + addition, UnityEngine.Random.Range(0,2) == 0 ? stageObjectOverview[(int)type].GetLimitYPos().max : stageObjectOverview[(int)type].GetLimitYPos().min);
             Generate(generationPos, type);
 
             ++generationBaseValue;
