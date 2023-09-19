@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     
     private void Start()
     {
-        accelerationByTime = 0.005f;
+        accelerationByTime = 0.002f;
         targetVelocityAtStart = 3f;
         rb = GetComponent<Rigidbody2D>();
         targetVelocity = targetVelocityAtStart;
