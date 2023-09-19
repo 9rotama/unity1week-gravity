@@ -18,6 +18,9 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private const float power = 10f;
     private bool isGravityUpward;
+    private const float outStageRangeUpper = 5;
+    private const float outStageRangeLower = -5;
+    private bool isGameOverFunctionExecuted;
     
    
     private void Start()
@@ -28,6 +31,8 @@ public class Player : MonoBehaviour
         targetVelocity = targetVelocityAtStart;
         isGravityUpward = false;
         SetGravity();
+        isGameOverFunctionExecuted = false;
+        BGMManager.Instance.Play(BGMPath.PLAY_BGM);
     }
 
     private void IncreaseTargetVelocity()
@@ -50,7 +55,7 @@ public class Player : MonoBehaviour
     
     private void SetGravity()
     {
-        rb.gravityScale = isGravityUpward ? -5 : 5;
+        rb.gravityScale = isGravityUpward ? -6 : 6;
     }
     private void ChangeGravity()
     {
@@ -66,11 +71,23 @@ public class Player : MonoBehaviour
         {
             ChangeGravity();
         }
+        if ((transform.position.y is > outStageRangeUpper or < outStageRangeLower ) && !isGameOverFunctionExecuted)
+        {
+            Debug.Log("out");
+
+            isGameOverFunctionExecuted = true;
+            OutStage();
+        }
+    }
+
+    private void OutStage()
+    {
+        gameManager.playerOutStage();
+        rb.velocity = Vector3.zero;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.gameObject);
         if (collision.gameObject.CompareTag("Floor"))
         {
             SEManager.Instance.Play(SEPath.HIT_FLOOR);
