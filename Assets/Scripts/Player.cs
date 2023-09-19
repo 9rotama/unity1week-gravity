@@ -21,8 +21,8 @@ public class Player : MonoBehaviour
     private const float outStageRangeUpper = 5;
     private const float outStageRangeLower = -5;
     private bool isGameOverFunctionExecuted;
+    private bool isFloating = false;
     
-   
     private void Start()
     {
         accelerationByTime = 0.005f;
@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
         SetGravity();
         isGameOverFunctionExecuted = false;
         BGMManager.Instance.Play(BGMPath.PLAY_BGM);
+        isFloating = true;
     }
 
     private void IncreaseTargetVelocity()
@@ -62,6 +63,7 @@ public class Player : MonoBehaviour
         isGravityUpward = !isGravityUpward;
         SetGravity();
         SEManager.Instance.Play(SEPath.CHANGE_GRAVITY);
+        isFloating = true;
     }
 
     private void Update()
@@ -88,9 +90,11 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Floor"))
+        if (collision.gameObject.CompareTag("Floor") && isFloating)
         {
+            isFloating = false;
             SEManager.Instance.Play(SEPath.HIT_FLOOR);
         }
     }
+    
 }
