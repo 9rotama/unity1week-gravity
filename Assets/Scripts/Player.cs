@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using KanKikuchi.AudioManager;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -55,6 +56,7 @@ public class Player : MonoBehaviour
     {
         isGravityUpward = !isGravityUpward;
         SetGravity();
+        SEManager.Instance.Play(SEPath.CHANGE_GRAVITY);
     }
 
     private void Update()
@@ -64,6 +66,14 @@ public class Player : MonoBehaviour
         {
             ChangeGravity();
         }
+    }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log(collision.gameObject);
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            SEManager.Instance.Play(SEPath.HIT_FLOOR);
+        }
     }
 }
