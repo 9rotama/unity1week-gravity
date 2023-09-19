@@ -15,7 +15,9 @@ public class Player : MonoBehaviour
     private float targetVelocityAtStart;
     private float targetVelocity;
     private Rigidbody2D rb;
-    private const float power = 10f;
+    // [SerializeField] private const float power = 10f;
+    [SerializeField] private float power = 10f;
+
     private bool isGravityUpward;
     
    
@@ -36,8 +38,9 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        float x = (targetVelocity - rb.velocity.x) * power;
-        rb.AddForce(new Vector2(x, 0), ForceMode2D.Force);
+        // float x = (targetVelocity - rb.velocity.x) * power;
+        // rb.AddForce(new Vector2(x, 0), ForceMode2D.Force);
+        rb.velocity = new Vector2(power, rb.velocity.y);
     }
     
     private void FixedUpdate()
