@@ -12,7 +12,7 @@ abstract public class ObjectPart : MonoBehaviour
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         objectSize = spriteRenderer.bounds.size;
-        Debug.Log(objectSize);
+        // Debug.Log(objectSize);
     }
 
 
