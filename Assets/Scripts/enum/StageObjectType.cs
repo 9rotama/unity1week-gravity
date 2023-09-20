@@ -1,5 +1,8 @@
 public enum StageObjectType
 {
     SimpleBlock,
-    // HogeBlock,
+    SplinterUpBlock,
+    SplinterUpDownBlock,
+    SplinterUpDownRightBlock,
+    SplinterAllBlock
 }

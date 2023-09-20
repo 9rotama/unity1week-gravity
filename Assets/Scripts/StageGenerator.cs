@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
@@ -59,7 +60,7 @@ public class StageGenerator : MonoBehaviour
 
         int limit = Mathf.FloorToInt(playerTransform.position.x / groundInterval);
 
-        Debug.Log(groundInterval);
+
 
         // 基準値に合わせてオブジェクトを生成
         // while文でオブジェクトの抜け穴を防ぐ
@@ -67,17 +68,19 @@ public class StageGenerator : MonoBehaviour
             
             var type = StageObjectType.SimpleBlock;
             Vector2 generationPos = new Vector2(generationBaseValue * groundInterval + addition, stageObjectOverview[(int)type].GetLimitYPos().max /*UnityEngine.Random.Range(0,2) == 0 ? stageObjectOverview[(int)type].GetLimitYPos().max : stageObjectOverview[(int)type].GetLimitYPos().min*/);
-            Generate(generationPos, type);
+            Generate(type, generationPos);
 
-            generationPos = new Vector2(generationBaseValue * groundInterval + addition, UnityEngine.Random.Range(0,2) == 0 ? stageObjectOverview[(int)type].GetLimitYPos().min : stageObjectOverview[(int)type].GetLimitYPos().min);
-            Generate(generationPos, type);
+            generationPos = new Vector2(generationBaseValue * groundInterval + addition, UnityEngine.Random.Range(0,2) == 0 ? stageObjectOverview[(int)type].GetLimitYPos().min : stageObjectOverview[(int)type].GetLimitYPos().max);
+            Generate(type, generationPos);
             
-            var num = UnityEngine.Random.Range(0,20);
+            var num = UnityEngine.Random.Range(0,10);
             if(num == 0){
-                GenerateVerticalDoubleBlock(new Vector2( generationBaseValue * groundInterval + addition, stageObjectOverview[(int)type].GetLimitYPos().max));
-            } else if(num == 1) {
-                GenerateVerticalTripleBlock(new Vector2( generationBaseValue * groundInterval + addition, stageObjectOverview[(int)type].GetLimitYPos().max));
-            }
+                type = StageObjectType.SplinterUpBlock;
+                generationPos = new Vector2( generationBaseValue * groundInterval + addition, stageObjectOverview[(int)type].GetLimitYPos().min);;
+                Generate(type, generationPos);
+
+
+            } 
 
             ++generationBaseValue;
         }
@@ -86,21 +89,24 @@ public class StageGenerator : MonoBehaviour
     }
     void GenerateVerticalTripleBlock(Vector2 pos){
         var type = StageObjectType.SimpleBlock;
-        Generate(pos, type);
-        Generate(pos + Vector2.up * stageObjectOverview[(int)type].objectSize.y, type);
-        Generate(pos + Vector2.up * stageObjectOverview[(int)type].objectSize.y * 2, type);
+        Generate(type, pos);
+        Generate(type, pos + Vector2.up * stageObjectOverview[(int)type].objectSize.y);
+        Generate(type, pos + Vector2.up * stageObjectOverview[(int)type].objectSize.y * 2);
     }
 
     void GenerateVerticalDoubleBlock(Vector2 pos){
         var type = StageObjectType.SimpleBlock;
-        Generate(pos, type);
-        Generate(pos + Vector2.up * stageObjectOverview[(int)type].objectSize.y, type);
+        Generate(type, pos);
+        Generate(type, pos + Vector2.up * stageObjectOverview[(int)type].objectSize.y);
     }
 
+
     // タイプに応じてゲームオブジェクトをpos座標に生成（再配置）
-    void Generate(Vector2 pos, StageObjectType type) 
+    void Generate(StageObjectType type, Vector2 pos, float rotationZ=0) 
     {
         long index = indexRegeneratingMap[type]++ % stageObjectsMap[type].Length;
         stageObjectsMap[type][index].transform.position = pos;
+        stageObjectsMap[type][index].transform.rotation = Quaternion.Euler(0, 0, rotationZ);
+
     }
 }

@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     private const float outStageRangeUpper = 5;
     private const float outStageRangeLower = -5;
     private bool isGameOverFunctionExecuted;
-    public bool isFloating {get; private set;} = false;
+    public bool IsFloating = false;
     
     private void Start()
     {
@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
         SetGravity();
         isGameOverFunctionExecuted = false;
         BGMManager.Instance.Play(BGMPath.PLAY_BGM);
-        isFloating = true;
+        IsFloating = true;
     }
 
     private void IncreaseTargetVelocity()
@@ -45,7 +45,6 @@ public class Player : MonoBehaviour
     {
         float x = (targetVelocity - rb.velocity.x) * power;
         rb.AddForce(new Vector2(x, 0), ForceMode2D.Force);
-        Debug.Log(rb.velocity);
     }
     
     private void FixedUpdate()
@@ -64,7 +63,7 @@ public class Player : MonoBehaviour
         isGravityUpward = !isGravityUpward;
         SetGravity();
         SEManager.Instance.Play(SEPath.CHANGE_GRAVITY);
-        isFloating = true;
+        IsFloating = true;
     }
 
     private void Update()
@@ -92,9 +91,17 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-        var stageObject = collision.gameObject.GetComponent<StageObject>();
+        var stageObject = collision.gameObject.GetComponent<ObjectPart>();
         stageObject?.OnCollisionWithPlayer(this);
 
     }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        
+        var stageObject = collision.gameObject.GetComponent<ObjectPart>();
+        stageObject?.OnCollisionWithPlayer(this);
+    }
+
+
     
 }

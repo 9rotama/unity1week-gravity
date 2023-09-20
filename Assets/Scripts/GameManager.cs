@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameUiController gameUiController;
     public float elapsedTimeFromStart { get; private set; } = 0;
     public GameState GameState { get; set; } = GameState.Ready;
+    public int score {get; private set;} = 0;
     private void Start()
     {
         GameState = GameState.Playing;
@@ -34,5 +35,11 @@ public class GameManager : MonoBehaviour
         {
             UpdateTime();
         }
+    }
+
+    public void DecreaseScore()
+    {
+        score -= 100;
+        score = Mathf.Max(0, score);
     }
 }

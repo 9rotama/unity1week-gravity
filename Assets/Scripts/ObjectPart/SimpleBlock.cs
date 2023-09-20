@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using KanKikuchi.AudioManager;
 
-public class SimpleBlock : StageObject
+public class SimpleBlock : ObjectPart
 {
     // Start is called before the first frame update
     void Start()
@@ -14,7 +14,11 @@ public class SimpleBlock : StageObject
     // Update is called once per frame
     public override void OnCollisionWithPlayer(Player player)
     {
-       SEManager.Instance.Play(SEPath.HIT_FLOOR);
+        if(player.IsFloating) {
+            SEManager.Instance.Play(SEPath.HIT_FLOOR);
+            player.IsFloating = false;
+        }
+        
     }
 
     
