@@ -75,8 +75,6 @@ public class Player : MonoBehaviour
         }
         if ((transform.position.y is > outStageRangeUpper or < outStageRangeLower ) && !isGameOverFunctionExecuted)
         {
-            Debug.Log("out");
-
             isGameOverFunctionExecuted = true;
             OutStage();
         }
