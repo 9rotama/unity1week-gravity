@@ -18,8 +18,8 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private const float power = 10f;
     private bool isGravityUpward;
-    private const float outStageRangeUpper = 5;
-    private const float outStageRangeLower = -5;
+    private const float outStageRangeUpper = 6.5f;
+    private const float outStageRangeLower = -6.5f;
     private bool isGameOverFunctionExecuted;
     public bool IsFloating = false;
     
