@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject player;
 
     public float elapsedTimeFromStart { get; private set; } = 0;
-    public GameState GameState { get; set; } = GameState.Ready;
+    public GameState GameState = GameState.Ready;
     public int score {get; private set;} = 0;
     
     private void Start()

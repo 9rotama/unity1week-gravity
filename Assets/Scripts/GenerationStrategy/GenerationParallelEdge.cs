@@ -8,18 +8,26 @@ using GenerationList = System.Collections.Generic.List<(StageObjectType type, in
 
 public class GenerationParallelEdge : GenerationStrategy
 {
-    public GenerationParallelEdge() : base(20) {}
+    bool hasSplinter;
+
+    GenerationLine topLine = new GenerationLine();
+    GenerationLine bottomLine = new GenerationLine();
+
+
+    public GenerationParallelEdge() : base(3) {}
+
+    public GenerationParallelEdge(bool _hasSplinter) : base(3) {
+        hasSplinter = _hasSplinter;
+        topLine = new GenerationLine(numColumn, false, 1, 0);
+        bottomLine = new GenerationLine(numColumn, false, -1, 0);
+    }
 
     public override GenerationList GetGenerationList()
-    {
-        var random = UnityEngine.Random.Range(0, 10);
-        var type = (random == 0) ? StageObjectType.SplinterUpBlock : StageObjectType.SimpleBlock;
-       
-        GenerationList list = new GenerationList
-        {
-            (StageObjectType.SimpleBlock, 1, 0),
-            (type, -1, 0)
-        };
+    {     
+        GenerationList list = new GenerationList();
+
+        list.AddRange(topLine.GetGenerationList());
+        list.AddRange(bottomLine.GetGenerationList());
 
         currentColumn++;
         return list;
@@ -28,7 +36,12 @@ public class GenerationParallelEdge : GenerationStrategy
     public override void Initialize()
     {
         base.Initialize();
-        numColumn = UnityEngine.Random.Range(10, 15);
+        numColumn = UnityEngine.Random.Range(5, 10);
+
+        topLine = new GenerationLine(numColumn, Common.TrueOrFalse(), 1, 180f);
+
+        bottomLine = new GenerationLine(numColumn, Common.TrueOrFalse(), -1, 0);
     }
+
 
 }

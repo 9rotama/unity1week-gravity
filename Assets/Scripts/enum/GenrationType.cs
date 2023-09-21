@@ -1,4 +1,6 @@
 public enum GenerationType {
     Holes,
-    ParallelEdge
+    ParallelEdge,
+    Stairs,
+    Line
 }

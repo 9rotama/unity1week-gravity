@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class StageGenerator : MonoBehaviour
 {
+    [SerializeField] GameManager gameManager;
 
     [SerializeField] Transform playerTransform;
 
@@ -38,8 +39,13 @@ public class StageGenerator : MonoBehaviour
     {
 
         // ステージオブジェクトの生成、配列に代入
+        stageObjectsMap[StageObjectType.SimpleBlock] = new StageObject[100];
+        stageObjectsMap[StageObjectType.SplinterUpBlock] = new StageObject[50];
+        stageObjectsMap[StageObjectType.SplinterUpDownBlock] = new StageObject[20];
+        stageObjectsMap[StageObjectType.SplinterUpDownRightBlock] = new StageObject[20];
+        stageObjectsMap[StageObjectType.SplinterAllBlock] = new StageObject[20];
+
         foreach(StageObjectType type in Enum.GetValues(typeof(StageObjectType))) {
-            stageObjectsMap[type] = new StageObject[50];
 
             for(var i=0; i<stageObjectsMap[type].Length; i++) {
                 stageObjectsMap[type][i] = Instantiate(stageObjectOverview[(int)type]);
@@ -49,14 +55,18 @@ public class StageGenerator : MonoBehaviour
             indexRegeneratingMap.Add(type, 0);
         }
 
+        // ステージの生成方法の初期化
         generationStrategyMap.Add(GenerationType.Holes, new GenerationHoles());
         generationStrategyMap.Add(GenerationType.ParallelEdge, new GenerationParallelEdge());
-        
-        generationType = GenerationType.ParallelEdge;
+        generationStrategyMap.Add(GenerationType.Stairs, new GenerationStairs());
+        generationStrategyMap.Add(GenerationType.Line, new GenerationLine());
+
 
         // シンプルなブロックのサイズに合わせる
         groundInterval = stageObjectOverview[(int)StageObjectType.SimpleBlock].objectSize.x;
 
+        generationBaseValue = -50;
+        GenerateStage();
     }
 
 
@@ -64,12 +74,17 @@ public class StageGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // 生成位置を画面外に調整するようの変数
-        float addition = 20.0f;
+        
+        GenerateStage();
+
+    }
+
+    void GenerateStage()
+    {
+          // 生成位置を画面外に調整するようの変数
+        float addition = 30.0f;
 
         int limit = Mathf.FloorToInt(playerTransform.position.x / groundInterval);
-
-
 
         // 基準値に合わせてオブジェクトを生成
         // while文でオブジェクトの抜け穴を防ぐ
@@ -94,12 +109,19 @@ public class StageGenerator : MonoBehaviour
             }
             
             if(generationStrategyMap[generationType].IsFinished()) {
+
+                // 次の生成方法を選択して初期化する
                 generationType = generationStrategyMap[generationType].NextStrategyType();
                 generationStrategyMap[generationType].Initialize();
+
+                if(gameManager.GameState == GameState.Ready) {
+                    generationType = GenerationType.ParallelEdge;
+                    generationStrategyMap[generationType] = new GenerationParallelEdge(_hasSplinter : false);
+                }
+
             }
             ++generationBaseValue;
         }
-
 
     }
 
