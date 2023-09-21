@@ -8,11 +8,11 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameUiController gameUiController;
     public float elapsedTimeFromStart { get; private set; } = 0;
-    public GameState GameState { get; set; } = GameState.Ready;
+    public GameState GameState = GameState.Ready;
     public int score {get; private set;} = 0;
     private void Start()
     {
-        GameState = GameState.Playing;
+        // GameState = GameState.Playing;
     }
 
     public void playerOutStage()

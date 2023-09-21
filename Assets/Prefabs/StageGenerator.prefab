@@ -44,7 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 678df0dfe53eb45ee82e9f4e83c8c54a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
   playerTransform: {fileID: 0}
   stageObjectOverview:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: -1177003876984488484, guid: e1f10e76f72ee47c9bd22654a3bf64f6, type: 3}
+  - {fileID: -3544251700293787290, guid: 7191ac4dced8845a6afaa857d9c3b8f8, type: 3}
+  - {fileID: -2110437196140901831, guid: bc3846ef617a2440c9a8e900790b8cab, type: 3}
+  - {fileID: -6810806785611346629, guid: a04a6f654ed6b45d99cd20f8ed07ab81, type: 3}
+  - {fileID: 5175446373981899990, guid: 6b14fd9aa00ea44479403f4143876b30, type: 3}
