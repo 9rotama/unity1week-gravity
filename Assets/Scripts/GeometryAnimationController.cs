@@ -25,10 +25,10 @@ public class GeometryAnimationController : MonoBehaviour
 
     void Spawn()
     {
-        GameObject spriteObj = Instantiate(sprites[Random.Range(0, sprites.Length - 1)]);
+        GameObject spriteObj = Instantiate(sprites[Random.Range(0, sprites.Length - 1)], this.transform);
         float x = Random.Range(xMin, xMax);
 
-        spriteObj.transform.position = new Vector3(x, transform.position.y, transform.position.z);
+        spriteObj.transform.localPosition = new Vector3(x, transform.position.y, transform.position.z);
         float scale = Random.Range(scaleMin, scaleMax);
         float speed = Random.Range(speedMin, speedMax);
         float alpha = Random.Range(alphaMin, alphaMax);

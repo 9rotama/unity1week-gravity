@@ -6,7 +6,7 @@ using UnityEngine;
 public class GeometryAnimationSpriteController : MonoBehaviour
 {
     private float speed;
-    private float yPosDestroy = 7;
+    private float yPosDestroy = 14;
 
     private SpriteRenderer spriteRenderer;
     // Start is called before the first frame update
