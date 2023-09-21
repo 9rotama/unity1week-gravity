@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     private GameManager gameManager;
     [SerializeField]
     private GameObject gameOverParticle;
+    [SerializeField] private GameObject trailParticle;
 
     
     private float accelerationByTime = 0.01f;
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour
     private const float outStageRangeLower = -6.5f;
     private bool isGameOverFunctionExecuted;
     public bool IsFloating = false;
+    private SpriteRenderer spriteRenderer;  
     
     private void Start()
     {
@@ -37,6 +39,8 @@ public class Player : MonoBehaviour
         isGameOverFunctionExecuted = false;
         BGMManager.Instance.Play(BGMPath.PLAY_BGM);
         IsFloating = true;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        trailParticle.SetActive(true);
     }
 
 
@@ -46,6 +50,8 @@ public class Player : MonoBehaviour
         isGameOverFunctionExecuted = false;
         transform.position = new Vector3(0,0,0);
         rb.simulated = true;
+        spriteRenderer.enabled = true;
+        trailParticle.SetActive(true);
 
     }
 
@@ -97,8 +103,11 @@ public class Player : MonoBehaviour
     private void OutStage()
     {
         gameManager.playerOutStage();
+        trailParticle.SetActive(false);
+
         GameObject particleObj = Instantiate(gameOverParticle);
         particleObj.transform.position = transform.position;
+        spriteRenderer.enabled = false;
         rb.simulated = false;
     }
 

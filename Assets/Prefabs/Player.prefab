@@ -148,6 +148,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
+  gameOverParticle: {fileID: 674448584482335443, guid: e16bbede55102064db56d4b0abdd89c6, type: 3}
+  trailParticle: {fileID: 8710078750761067635}
   IsFloating: 0
 --- !u!1 &8710078750761067635
 GameObject:
