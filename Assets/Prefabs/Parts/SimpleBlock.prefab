@@ -147,6 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb49e47b9934440c1b01f32ceefb8856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BlockHitParticle: {fileID: 837598377724787589, guid: d33e4b3e7a01eaa448a392d2258ae9d5, type: 3}
 --- !u!114 &-1177003876984488484
 MonoBehaviour:
   m_ObjectHideFlags: 0

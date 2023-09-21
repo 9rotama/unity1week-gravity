@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     private float targetVelocity;
     private Rigidbody2D rb;
     private const float power = 10f;
-    private bool isGravityUpward;
+    public bool isGravityUpward;
     private const float outStageRangeUpper = 6.5f;
     private const float outStageRangeLower = -6.5f;
     private bool isGameOverFunctionExecuted;
@@ -114,7 +114,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
+        
         var stageObject = collision.gameObject.GetComponent<ObjectPart>();
         stageObject?.OnCollisionWithPlayer(this);
 
