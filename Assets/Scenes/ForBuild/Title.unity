@@ -518,11 +518,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2604202692598930950, guid: cbb3b0afc0128d74990bb0183e03c28b, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 292.8283
+      value: 293.8283
       objectReference: {fileID: 0}
     - target: {fileID: 2604202692598930950, guid: cbb3b0afc0128d74990bb0183e03c28b, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 101
+      value: 102
       objectReference: {fileID: 0}
     - target: {fileID: 2604202692598930950, guid: cbb3b0afc0128d74990bb0183e03c28b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -619,11 +619,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2604202692598930950, guid: cbb3b0afc0128d74990bb0183e03c28b, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 292.8283
+      value: 293.8283
       objectReference: {fileID: 0}
     - target: {fileID: 2604202692598930950, guid: cbb3b0afc0128d74990bb0183e03c28b, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 101
+      value: 102
       objectReference: {fileID: 0}
     - target: {fileID: 2604202692598930950, guid: cbb3b0afc0128d74990bb0183e03c28b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1206,11 +1206,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2604202692598930950, guid: cbb3b0afc0128d74990bb0183e03c28b, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 292.8283
+      value: 293.8283
       objectReference: {fileID: 0}
     - target: {fileID: 2604202692598930950, guid: cbb3b0afc0128d74990bb0183e03c28b, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 101
+      value: 102
       objectReference: {fileID: 0}
     - target: {fileID: 2604202692598930950, guid: cbb3b0afc0128d74990bb0183e03c28b, type: 3}
       propertyPath: m_LocalScale.x
@@ -1279,6 +1279,10 @@ PrefabInstance:
     - target: {fileID: 2604202692598931006, guid: cbb3b0afc0128d74990bb0183e03c28b, type: 3}
       propertyPath: m_Transition
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2604202694067545369, guid: cbb3b0afc0128d74990bb0183e03c28b, type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 70
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cbb3b0afc0128d74990bb0183e03c28b, type: 3}
