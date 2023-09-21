@@ -23,13 +23,11 @@ public class SimpleBlock : ObjectPart
             GameObject particleObj = Instantiate(BlockHitParticle);
             if (player.isGravityUpward)
             {
-                particleObj.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 0.8f, player.transform.position.z);
-                particleObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+                particleObj.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 0.5f, player.transform.position.z);
             }
             else
             {
-                particleObj.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - 0.8f, player.transform.position.z);
-                particleObj.transform.rotation = Quaternion.Euler(-90, 0, 0);
+                particleObj.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - 0.5f, player.transform.position.z);
             }
             
             player.IsFloating = false;
