@@ -11,6 +11,9 @@ public class Player : MonoBehaviour
     [Header("必要なコンポーネント")]
     [SerializeField]
     private GameManager gameManager;
+    [SerializeField]
+    private GameObject gameOverParticle;
+
     
     private float accelerationByTime = 0.01f;
     private float targetVelocityAtStart;
@@ -42,6 +45,8 @@ public class Player : MonoBehaviour
         targetVelocity = targetVelocityAtStart;
         isGameOverFunctionExecuted = false;
         transform.position = new Vector3(0,0,0);
+        rb.simulated = true;
+
     }
 
     private void IncreaseTargetVelocity()
@@ -92,8 +97,11 @@ public class Player : MonoBehaviour
     private void OutStage()
     {
         gameManager.playerOutStage();
-        rb.velocity = Vector3.zero;
+        GameObject particleObj = Instantiate(gameOverParticle);
+        particleObj.transform.position = transform.position;
+        rb.simulated = false;
     }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
