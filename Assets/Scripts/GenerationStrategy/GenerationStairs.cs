@@ -17,19 +17,29 @@ public class GenerationStairs : GenerationStrategy
 
     // 幅
     int width = UnityEngine.Random.Range(1, 5);
+
+    bool avoid;
     
     public GenerationStairs() : base(5) {
-        numColumn *= width;
+        Initialize();
     }
 
     public GenerationStairs(bool _isUp) : base(5) {
         isUp = _isUp;
-        numColumn *= width;
+        Initialize();
     }
 
     public override GenerationList GetGenerationList()
     {
         var list = new GenerationList();
+
+        if(avoid){
+            avoid = false;
+            return new GenerationList(){
+                (0, 1, 0)
+            };
+        }
+        
 
         int height = isUp ? currentColumn : numColumn - currentColumn + 1;
 
@@ -53,6 +63,7 @@ public class GenerationStairs : GenerationStrategy
         numColumn = UnityEngine.Random.Range(1, 6);
         width =  UnityEngine.Random.Range(1, 5);
         numColumn *= width;
+        avoid = !isUp;
     }
 
 }

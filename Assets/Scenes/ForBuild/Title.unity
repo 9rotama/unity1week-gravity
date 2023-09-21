@@ -128,6 +128,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2604202692598930951, guid: cbb3b0afc0128d74990bb0183e03c28b, type: 3}
   m_PrefabInstance: {fileID: 1159971184}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &353686621 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 489205908348339519, guid: 1803150f7e8064da38d03ea838cb8b01, type: 3}
+  m_PrefabInstance: {fileID: 1177409383}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 678df0dfe53eb45ee82e9f4e83c8c54a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &468905768 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2604202692598930950, guid: cbb3b0afc0128d74990bb0183e03c28b, type: 3}
@@ -268,7 +279,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 5.2
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1419,6 +1430,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1588557024}
+    - target: {fileID: 7943816149533988402, guid: e9d0eae20a538f84c92ff260b9cc0c83, type: 3}
+      propertyPath: stageGenerator
+      value: 
+      objectReference: {fileID: 353686621}
     - target: {fileID: 7943816149533988402, guid: e9d0eae20a538f84c92ff260b9cc0c83, type: 3}
       propertyPath: gameUiController
       value: 
