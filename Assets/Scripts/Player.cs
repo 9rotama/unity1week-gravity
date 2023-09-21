@@ -36,6 +36,14 @@ public class Player : MonoBehaviour
         IsFloating = true;
     }
 
+
+    public void Reset()
+    {
+        targetVelocity = targetVelocityAtStart;
+        isGameOverFunctionExecuted = false;
+        transform.position = new Vector3(0,0,0);
+    }
+
     private void IncreaseTargetVelocity()
     {
         targetVelocity += accelerationByTime;
@@ -49,8 +57,9 @@ public class Player : MonoBehaviour
     
     private void FixedUpdate()
     {
-        if (gameManager.GameState != GameState.Playing) return;
+        if (gameManager.GameState == GameState.GameOver) return;
         Move();
+        if (gameManager.GameState != GameState.Playing) return;
         IncreaseTargetVelocity();
     }
     
@@ -68,7 +77,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (gameManager.GameState != GameState.Playing) return;
+        if (gameManager.GameState == GameState.GameOver) return;
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
             ChangeGravity();
