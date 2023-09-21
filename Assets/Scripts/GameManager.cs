@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameUiController gameUiController;
     [SerializeField] private GameObject player;
+    [SerializeField] private StageGenerator stageGenerator;
 
     public float elapsedTimeFromStart { get; private set; } = 0;
     public GameState GameState = GameState.Ready;
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
         gameUiController.DisplayTitle();
         GameState = GameState.Ready;
         player.GetComponent<Player>().Reset();
+        stageGenerator.Initialize();
     }
 
     public void GameStart()
@@ -39,6 +41,9 @@ public class GameManager : MonoBehaviour
         gameUiController.HideTitle();
         gameUiController.HideGameOver();;
         gameUiController.DisplayGameUi();
+        GameState = GameState.Ready;
+        player.GetComponent<Player>().Reset();
+        stageGenerator.Initialize();
         GameState = GameState.Playing;
     }
 

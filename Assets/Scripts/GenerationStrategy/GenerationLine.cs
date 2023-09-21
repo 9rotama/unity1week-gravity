@@ -49,7 +49,7 @@ public class GenerationLine : GenerationStrategy
     public override void Initialize()
     {
         base.Initialize();
-        numColumn = Random.Range(3, 10);
+        numColumn = Random.Range(2, 10);
         nth = Random.Range(-5, 5);
         if(nth == 0) {
             nth = 1;
