@@ -11,17 +11,22 @@ public class Player : MonoBehaviour
     [Header("必要なコンポーネント")]
     [SerializeField]
     private GameManager gameManager;
+    [SerializeField]
+    private GameObject gameOverParticle;
+    [SerializeField] private GameObject trailParticle;
+
     
     private float accelerationByTime = 0.01f;
     private float targetVelocityAtStart;
     private float targetVelocity;
     private Rigidbody2D rb;
     private const float power = 10f;
-    private bool isGravityUpward;
+    public bool isGravityUpward;
     private const float outStageRangeUpper = 6.5f;
     private const float outStageRangeLower = -6.5f;
     private bool isGameOverFunctionExecuted;
     public bool IsFloating = false;
+    private SpriteRenderer spriteRenderer;  
     
     private void Start()
     {
@@ -34,6 +39,8 @@ public class Player : MonoBehaviour
         isGameOverFunctionExecuted = false;
         BGMManager.Instance.Play(BGMPath.PLAY_BGM);
         IsFloating = true;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        trailParticle.SetActive(true);
     }
 
 
@@ -42,6 +49,10 @@ public class Player : MonoBehaviour
         targetVelocity = targetVelocityAtStart;
         isGameOverFunctionExecuted = false;
         transform.position = new Vector3(0,0,0);
+        rb.simulated = true;
+        spriteRenderer.enabled = true;
+        trailParticle.SetActive(true);
+
     }
 
     private void IncreaseTargetVelocity()
@@ -92,12 +103,18 @@ public class Player : MonoBehaviour
     private void OutStage()
     {
         gameManager.playerOutStage();
-        rb.velocity = Vector3.zero;
+        trailParticle.SetActive(false);
+
+        GameObject particleObj = Instantiate(gameOverParticle);
+        particleObj.transform.position = transform.position;
+        spriteRenderer.enabled = false;
+        rb.simulated = false;
     }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
+        
         var stageObject = collision.gameObject.GetComponent<ObjectPart>();
         stageObject?.OnCollisionWithPlayer(this);
 
