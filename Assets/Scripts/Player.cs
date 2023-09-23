@@ -100,7 +100,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OutStage()
+    public void OutStage()
     {
         gameManager.playerOutStage();
         trailParticle.SetActive(false);
