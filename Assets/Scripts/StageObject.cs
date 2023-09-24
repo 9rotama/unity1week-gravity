@@ -7,8 +7,7 @@ using UnityEngine;
 
 public class StageObject : MonoBehaviour 
 {
-    [field: SerializeField] 
-    public Vector2 objectSize {get; private set;} 
+    public readonly Vector2 objectSize  = Vector2.one * 1.3f;
 
     static float screenTop;
     static float screenBottom;
