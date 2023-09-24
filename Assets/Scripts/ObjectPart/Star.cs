@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using KanKikuchi.AudioManager;
 using UnityEngine;
-using KanKikuchi.AudioManager;
 
 public class Star : ObjectPart
 {
