@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
         gameUiController.HideGameOver();
         gameUiController.DisplayGameOver();
         GameState = GameState.GameOver;
-
+        gameUiController.SetScoreTextForGameOverUi(score);
     }
     
     private void UpdateTime()

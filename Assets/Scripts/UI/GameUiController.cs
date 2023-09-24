@@ -8,7 +8,7 @@ public class GameUiController : MonoBehaviour
     [SerializeField] private GameObject Title;
     [SerializeField] private GameObject startButton;
     [SerializeField] private GameObject gameOver;
-    [SerializeField] private GameObject scoreText;
+    [SerializeField] private Text scoreText;
     [SerializeField] private GameObject retryButton;
     [SerializeField] private GameObject returnTitleButton;
     [SerializeField] private GameManager gameManager;
@@ -47,5 +47,10 @@ public class GameUiController : MonoBehaviour
     public void HideGameOver()
     {
         gameOver.SetActive(false);
+    }
+
+    public void SetScoreTextForGameOverUi(int score)
+    {
+        scoreText.text = "SCORE: " + score;
     }
 }
