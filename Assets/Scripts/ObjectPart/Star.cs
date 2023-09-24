@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KanKikuchi.AudioManager;
 
 public class Star : ObjectPart
 {
@@ -19,10 +20,10 @@ public class Star : ObjectPart
     public override void OnCollisionWithPlayer(Player player)
     {
         gameManager.IncreaseScore(point);
+        SEManager.Instance.Play(SEPath.SCORE_ITEM);
 
         //画面外に移動
         transform.position = Vector2.left * 20;
-        Debug.Log("ポイントゲットだぜ");
     }
 
 

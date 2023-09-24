@@ -1,5 +1,5 @@
 public enum BlockGenerationType {
-    ParallelEdge,
+    Parallel,
     Stairs,
     Line
 }
