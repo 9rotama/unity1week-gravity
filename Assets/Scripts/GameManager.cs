@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using KanKikuchi.AudioManager;
 using UnityEngine;
+using unityroom.Api;
 
 public class GameManager : MonoBehaviour
 {
@@ -81,8 +82,8 @@ public class GameManager : MonoBehaviour
     
     public void SetBestValues(int score, float distance)
     {
-         PlayerPrefs.SetInt("bestScore", score);
-         PlayerPrefs.SetFloat("bestDistance", distance);
+        PlayerPrefs.SetInt("bestScore", score);
+        PlayerPrefs.SetFloat("bestDistance", distance);
     }
 
     public void playerOutStage()
@@ -105,6 +106,8 @@ public class GameManager : MonoBehaviour
         gameUiController.SetBestDistanceTextForGameOverUi(bestValues.distance);
 
         SetBestValues(Math.Max(bestValues.score, score), Math.Max(bestValues.distance, distance));
+        
+        UnityroomApiClient.Instance.SendScore(1, bestValues.score, ScoreboardWriteMode.HighScoreDesc);
     }
     
  
