@@ -6,20 +6,20 @@ using UnityEngine;
 
 using GenerationList = System.Collections.Generic.List<(StageObjectType type, int nth, float rotationZ)>;
 
-public class GenerationParallelEdge : GenerationStrategy
+public class BlockGenerationParallelEdge : GenerationStrategy<BlockGenerationType>
 {
     bool hasSplinter;
 
-    GenerationLine topLine = new GenerationLine();
-    GenerationLine bottomLine = new GenerationLine();
+    BlockGenerationLine topLine = new BlockGenerationLine();
+    BlockGenerationLine bottomLine = new BlockGenerationLine();
 
 
-    public GenerationParallelEdge() : base(3) {}
+    public BlockGenerationParallelEdge() : base(3) {}
 
-    public GenerationParallelEdge(bool _hasSplinter) : base(3) {
+    public BlockGenerationParallelEdge(bool _hasSplinter) : base(3) {
         hasSplinter = _hasSplinter;
-        topLine = new GenerationLine(numColumn, false, 1, 0);
-        bottomLine = new GenerationLine(numColumn, false, -1, 0);
+        topLine = new BlockGenerationLine(numColumn, false, 1, 0);
+        bottomLine = new BlockGenerationLine(numColumn, false, -1, 0);
     }
 
     public override GenerationList GetGenerationList()
@@ -38,9 +38,9 @@ public class GenerationParallelEdge : GenerationStrategy
         base.Initialize();
         numColumn = UnityEngine.Random.Range(5, 10);
 
-        topLine = new GenerationLine(numColumn, Common.TrueOrFalse(), 1, 180f);
+        topLine = new BlockGenerationLine(numColumn, Common.TrueOrFalse(), 1, 180f);
 
-        bottomLine = new GenerationLine(numColumn, Common.TrueOrFalse(), -1, 0);
+        bottomLine = new BlockGenerationLine(numColumn, Common.TrueOrFalse(), -1, 0);
     }
 
 

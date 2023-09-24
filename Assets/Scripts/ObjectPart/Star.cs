@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Splinter : ObjectPart
+public class Star : ObjectPart
 {
-    static GameManager gameManager;
+    [SerializeField] int point;
 
-    const int decreasePoint = -100;
+    static GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
@@ -16,14 +16,14 @@ public class Splinter : ObjectPart
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public override void OnCollisionWithPlayer(Player player)
     {
-        gameManager.IncreaseScore(decreasePoint);
+        gameManager.IncreaseScore(point);
+
+        //画面外に移動
+        transform.position = Vector2.left * 20;
+        Debug.Log("ポイントゲットだぜ");
     }
+
+
 }

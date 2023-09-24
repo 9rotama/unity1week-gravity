@@ -23,8 +23,12 @@ public class StageGenerator : MonoBehaviour
     // ステージオブジェクト配列それぞれの再生成するさいの添字
     Dictionary<StageObjectType, long> indexRegeneratingMap = new Dictionary<StageObjectType, long>();
 
-    // 生成アルゴリズムを格納
-    Dictionary<GenerationType, GenerationStrategy> generationStrategyMap = new Dictionary<GenerationType, GenerationStrategy>();
+    // ブロック生成アルゴリズムを格納
+    Dictionary<BlockGenerationType, GenerationStrategy<BlockGenerationType>> blockGenerationStrategyMap = new Dictionary<BlockGenerationType, GenerationStrategy<BlockGenerationType>>();
+    
+    //
+    Dictionary<StarGenerationType, GenerationStrategy<StarGenerationType>> starGenerationStrategyMap = new Dictionary<StarGenerationType, GenerationStrategy<StarGenerationType>>();
+
 
     // 地面の生成間隔
     float groundInterval; 
@@ -33,7 +37,10 @@ public class StageGenerator : MonoBehaviour
     int generationBaseValue = -30;
 
     // 生成タイプ
-    GenerationType generationType;
+    BlockGenerationType blockGenerationType;
+    StarGenerationType starGenerationType;
+
+
 
     GenerationList prevList = new GenerationList();
 
@@ -47,6 +54,10 @@ public class StageGenerator : MonoBehaviour
         stageObjectsMap[StageObjectType.SplinterUpDownBlock] = new StageObject[20];
         stageObjectsMap[StageObjectType.SplinterUpDownRightBlock] = new StageObject[20];
         stageObjectsMap[StageObjectType.SplinterAllBlock] = new StageObject[20];
+        stageObjectsMap[StageObjectType.SmallStarItem] = new StageObject[20];
+        stageObjectsMap[StageObjectType.MiddleStarItem] = new StageObject[20];
+        stageObjectsMap[StageObjectType.LargeStarItem] = new StageObject[20];
+        
 
         foreach(StageObjectType type in Enum.GetValues(typeof(StageObjectType))) {
 
@@ -59,9 +70,14 @@ public class StageGenerator : MonoBehaviour
         }
 
         // ステージの生成方法の初期化
-        generationStrategyMap.Add(GenerationType.ParallelEdge, new GenerationParallelEdge());
-        generationStrategyMap.Add(GenerationType.Stairs, new GenerationStairs());
-        generationStrategyMap.Add(GenerationType.Line, new GenerationLine());
+        blockGenerationStrategyMap.Add(BlockGenerationType.ParallelEdge, new BlockGenerationParallelEdge());
+        blockGenerationStrategyMap.Add(BlockGenerationType.Stairs, new BlockGenerationStairs());
+        blockGenerationStrategyMap.Add(BlockGenerationType.Line, new BlockGenerationLine());
+
+        starGenerationStrategyMap.Add(StarGenerationType.Nothing, new StarGenerationNothing());
+        starGenerationStrategyMap.Add(StarGenerationType.Straight, new StarGenerationStraight());
+        starGenerationStrategyMap.Add(StarGenerationType.Zigzag, new StarGenerationZigzag());
+
 
 
         // シンプルなブロックのサイズに合わせる
@@ -102,7 +118,7 @@ public class StageGenerator : MonoBehaviour
         // while文でオブジェクトの抜け穴を防ぐ
         while(generationBaseValue < limit) {
 
-            var generationList = generationStrategyMap[generationType].GetGenerationList();
+            var generationList = blockGenerationStrategyMap[blockGenerationType].GetGenerationList();
 
             //詰み回避
             //前後の生成リストの座標に1からlimitBlockSizeが存在したら現在のリストを書き換える
@@ -119,6 +135,9 @@ public class StageGenerator : MonoBehaviour
                 };
             }
             prevList = new GenerationList(generationList);
+
+            // アイテムの生成リストも追加
+            generationList.AddRange(starGenerationStrategyMap[starGenerationType].GetGenerationList());
 
             // 生成
             foreach(var i in generationList){
@@ -137,18 +156,36 @@ public class StageGenerator : MonoBehaviour
                 Generate(i.type, new Vector2(xPos, yPos), i.rotationZ);
             }
             
-            if(generationStrategyMap[generationType].IsFinished()) {
+            // 現在の生成方法が終わったら次の生成方法を選択して初期化する
+            // ブロック
+            var blockGeneration = blockGenerationStrategyMap[blockGenerationType];
+            if(blockGeneration.IsFinished()) {
 
-                // 次の生成方法を選択して初期化する
-                generationType = generationStrategyMap[generationType].NextStrategyType();
-                generationStrategyMap[generationType].Initialize();
+                blockGenerationType = blockGeneration.NextStrategyType();
+                blockGeneration.Initialize();
 
                 if(gameManager.GameState == GameState.Ready) {
-                    generationType = GenerationType.ParallelEdge;
-                    generationStrategyMap[generationType] = new GenerationParallelEdge(_hasSplinter : false);
+                    blockGenerationType = BlockGenerationType.ParallelEdge;
+                    blockGenerationStrategyMap[blockGenerationType] = new BlockGenerationParallelEdge(_hasSplinter : false);
                 }
 
             }
+
+            // アイテムスター
+            var starGeneration = starGenerationStrategyMap[starGenerationType];
+            if(starGeneration.IsFinished()) {
+
+                starGenerationType = starGeneration.NextStrategyType();
+                starGeneration.Initialize();
+
+                if(gameManager.GameState == GameState.Ready) {
+                    starGenerationType = StarGenerationType.Nothing;
+                    starGenerationStrategyMap[starGenerationType].Initialize();
+                }
+
+            }
+
+
             ++generationBaseValue;
         }
 

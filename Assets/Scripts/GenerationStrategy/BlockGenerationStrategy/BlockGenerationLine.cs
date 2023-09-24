@@ -8,7 +8,7 @@ using UnityEngine;
 using GenerationList = System.Collections.Generic.List<(StageObjectType type, int nth, float rotationZ)>;
 using Random = UnityEngine.Random;
 
-public class GenerationLine : GenerationStrategy
+public class BlockGenerationLine : GenerationStrategy<BlockGenerationType>
 {   
     int nth=1;
 
@@ -17,9 +17,9 @@ public class GenerationLine : GenerationStrategy
     StageObjectType objectType;
     bool hasSplinterPossible;
     
-    public GenerationLine() : base(2) {}
+    public BlockGenerationLine() : base(2) {}
 
-    public GenerationLine(int _numColumn, bool _hasSplinterPossible, int _nth,float _rotationZ) : base(_numColumn) {
+    public BlockGenerationLine(int _numColumn, bool _hasSplinterPossible, int _nth,float _rotationZ) : base(_numColumn) {
         numColumn = _numColumn;
         rotationZ = _rotationZ;
         nth = _nth;
@@ -30,7 +30,7 @@ public class GenerationLine : GenerationStrategy
     {
         if(hasSplinterPossible){
             var rand = Random.Range(0,3);
-            objectType = (rand != 0) ? StageObjectType.SimpleBlock : (StageObjectType)Random.Range(0, Enum.GetNames(typeof(StageObjectType)).Length);
+            objectType = (rand != 0) ? StageObjectType.SimpleBlock : Common.GetRandom(Common.GetBlockTypeList());
         } else {
             objectType = StageObjectType.SimpleBlock;
         }
