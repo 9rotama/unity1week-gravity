@@ -44,6 +44,19 @@ public class GameManager : MonoBehaviour
         GameState = GameState.Playing;
     }
 
+    public void Retry()
+    {
+        BGMManager.Instance.Play(BGMPath.PLAY_BGM);
+        BGMManager.Instance.FadeIn(BGMPath.PLAY_BGM);
+        gameUiController.HideTitle();
+        gameUiController.HideGameOver();;
+        gameUiController.DisplayGameUi();
+        GameState = GameState.Ready;
+        player.GetComponent<Player>().Reset();
+        stageGenerator.Initialize();
+        GameState = GameState.Playing;
+    }
+
     public void playerOutStage()
     {
         SEManager.Instance.Play(SEPath.OUT_STAGE);
