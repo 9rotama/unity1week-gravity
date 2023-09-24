@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using KanKikuchi.AudioManager;
 using UnityEngine;
 
 public class Splinter : ObjectPart
@@ -24,6 +25,7 @@ public class Splinter : ObjectPart
 
     public override void OnCollisionWithPlayer(Player player)
     {
+        SEManager.Instance.Play(SEPath.SPLINTER);
         gameManager.IncreaseScore(decreasePoint);
     }
 }
