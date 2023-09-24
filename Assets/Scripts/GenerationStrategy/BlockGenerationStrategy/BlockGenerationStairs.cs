@@ -7,7 +7,7 @@ using UnityEngine;
 
 using GenerationList = System.Collections.Generic.List<(StageObjectType type, int nth, float rotationZ)>;
 
-public class GenerationStairs : GenerationStrategy
+public class BlockGenerationStairs : GenerationStrategy<BlockGenerationType>
 {   
     // true:上り、false:下り
     bool isUp;
@@ -20,11 +20,11 @@ public class GenerationStairs : GenerationStrategy
 
     bool avoid;
     
-    public GenerationStairs() : base(5) {
+    public BlockGenerationStairs() : base(5) {
         Initialize();
     }
 
-    public GenerationStairs(bool _isUp) : base(5) {
+    public BlockGenerationStairs(bool _isUp) : base(5) {
         isUp = _isUp;
         Initialize();
     }
@@ -36,7 +36,7 @@ public class GenerationStairs : GenerationStrategy
         if(avoid){
             avoid = false;
             return new GenerationList(){
-                (0, 1, 0)
+                (0, Common.TrueOrFalse() ? 1 : -1, 0)
             };
         }
         

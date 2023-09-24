@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.PlayerLoop;
 using GenerationList = System.Collections.Generic.List<(StageObjectType type, int nth, float rotationZ)>;
 
-abstract public class GenerationStrategy
+
+abstract public class GenerationStrategy<StrategyType> where StrategyType : Enum
 {
     protected int currentColumn = 1;
 
@@ -33,18 +34,33 @@ abstract public class GenerationStrategy
         return currentColumn > numColumn;
     }
 
-    public GenerationType NextStrategyType()
+    virtual public StrategyType NextStrategyType()
     {   
+        int EnumNumOfItems = Enum.GetNames(typeof(StrategyType)).Length;
 
-
-        int EnumNumOfItems = Enum.GetNames(typeof(GenerationType)).Length;
-
-        return (GenerationType)UnityEngine.Random.Range(0, EnumNumOfItems);
+        return (StrategyType)(object)UnityEngine.Random.Range(0, EnumNumOfItems);
     }
 
     public virtual void Initialize()
     {
         currentColumn = 1;
+    }
+
+    protected StageObjectType GetRandomStarItemType()
+    {
+        var starType = StageObjectType.SmallStarItem;
+
+        var rand = UnityEngine.Random.Range(0, 100);
+
+        if(rand <= 60) {
+            starType = StageObjectType.SmallStarItem;
+        } else if(rand <= 90) {
+            starType = StageObjectType.MiddleStarItem;
+        } else {
+            starType = StageObjectType.LargeStarItem;
+        }
+
+        return starType;
     }
 
 

@@ -41,9 +41,6 @@ public class GameManager : MonoBehaviour
         gameUiController.HideTitle();
         gameUiController.HideGameOver();;
         gameUiController.DisplayGameUi();
-        GameState = GameState.Ready;
-        player.GetComponent<Player>().Reset();
-        stageGenerator.Initialize();
         GameState = GameState.Playing;
     }
 
@@ -73,9 +70,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void DecreaseScore()
+    public void IncreaseScore(int point)
     {
-        score -= 100;
+        score += point;
         score = Mathf.Max(0, score);
     }
 }

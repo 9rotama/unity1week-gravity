@@ -1,4 +1,4 @@
-public enum GenerationType {
+public enum BlockGenerationType {
     ParallelEdge,
     Stairs,
     Line

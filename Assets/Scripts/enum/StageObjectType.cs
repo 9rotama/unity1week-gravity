@@ -4,5 +4,8 @@ public enum StageObjectType
     SplinterUpBlock,
     SplinterUpDownBlock,
     SplinterUpDownRightBlock,
-    SplinterAllBlock
+    SplinterAllBlock,
+    SmallStarItem,
+    MiddleStarItem,
+    LargeStarItem,
 }
