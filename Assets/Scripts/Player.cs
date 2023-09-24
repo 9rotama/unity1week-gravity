@@ -83,6 +83,7 @@ public class Player : MonoBehaviour
         isGravityUpward = !isGravityUpward;
         SetGravity();
         SEManager.Instance.Play(SEPath.CHANGE_GRAVITY);
+        rb.velocity = new Vector2(rb.velocity.x, 0);
         IsFloating = true;
     }
 
