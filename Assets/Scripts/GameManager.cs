@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
         gameUiController.DisplayTitle();
         GameState = GameState.Ready;
         player.GetComponent<Player>().Reset();
+        stageGenerator.Initialize();
         Init();
     }
 
