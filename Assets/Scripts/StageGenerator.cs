@@ -72,7 +72,7 @@ public class StageGenerator : MonoBehaviour
         }
 
         // ステージの生成方法の初期化
-        blockGenerationStrategyMap.Add(BlockGenerationType.ParallelEdge, new BlockGenerationParallelEdge());
+        blockGenerationStrategyMap.Add(BlockGenerationType.Parallel, new BlockGenerationParallel());
         blockGenerationStrategyMap.Add(BlockGenerationType.Stairs, new BlockGenerationStairs());
         blockGenerationStrategyMap.Add(BlockGenerationType.Line, new BlockGenerationLine());
 
@@ -174,8 +174,8 @@ public class StageGenerator : MonoBehaviour
                 blockGeneration.Initialize();
 
                 if(gameManager.GameState == GameState.Ready) {
-                    blockGenerationType = BlockGenerationType.ParallelEdge;
-                    blockGenerationStrategyMap[blockGenerationType] = new BlockGenerationParallelEdge(_hasSplinter : false);
+                    blockGenerationType = BlockGenerationType.Parallel;
+                    blockGenerationStrategyMap[blockGenerationType] = new BlockGenerationParallel(_hasSplinter : false);
                 }
 
             }
