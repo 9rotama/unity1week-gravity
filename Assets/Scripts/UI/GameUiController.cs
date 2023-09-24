@@ -7,20 +7,25 @@ public class GameUiController : MonoBehaviour
 {
     [SerializeField] private GameObject Title;
     [SerializeField] private GameObject startButton;
+    [SerializeField] private GameObject game;
     [SerializeField] private GameObject gameOver;
     [SerializeField] private Text scoreText;
     [SerializeField] private Text bestScoreText;
     [SerializeField] private Text distanceText;
     [SerializeField] private Text bestDistanceText;
+    [SerializeField] private Text scoreGameUiText;
     [SerializeField] private GameObject retryButton;
     [SerializeField] private GameObject returnTitleButton;
     [SerializeField] private GameManager gameManager;
+
     public void Start()
     {
         startButton.GetComponent<Button>().onClick.AddListener(gameManager.GameStart);
         returnTitleButton.GetComponent<Button>().onClick.AddListener(gameManager.Title);
         retryButton.GetComponent<Button>().onClick.AddListener(gameManager.Retry);
         gameOver.SetActive(false);
+        game.SetActive(false);
+
     }
 
     public void DisplayTitle()
@@ -36,12 +41,12 @@ public class GameUiController : MonoBehaviour
 
     public void DisplayGameUi()
     {
-        
+        game.SetActive(true);
     }
     
     public void HideGameUi()
     {
-        
+        game.SetActive(false);
     }
     public void DisplayGameOver()
     {
@@ -68,5 +73,17 @@ public class GameUiController : MonoBehaviour
     public void SetBestDistanceTextForGameOverUi(float distance)
     {
         bestDistanceText.text = "BEST: " + distance.ToString("F2");
+    }
+
+
+    
+    private void UpdateScoreForGameUi()
+    {
+        scoreGameUiText.text = gameManager.finalScore.ToString();
+    }
+
+    private void FixedUpdate()
+    {
+        UpdateScoreForGameUi();
     }
 }

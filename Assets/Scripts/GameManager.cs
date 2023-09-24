@@ -14,7 +14,10 @@ public class GameManager : MonoBehaviour
     public float elapsedTimeFromStart { get; private set; } = 0;
     public GameState GameState = GameState.Ready;
     public int score {get; private set;} = 0;
-    
+    public int finalScore;
+
+    private float playerStartPos;
+
     private void Start()
     {
         BGMManager.Instance.Play(BGMPath.TITLE);
@@ -23,6 +26,8 @@ public class GameManager : MonoBehaviour
 
     private void Init()
     {
+        playerStartPos = player.transform.position.x;
+        finalScore = 0;
         score = 0;
         elapsedTimeFromStart = 0;
     }
@@ -64,13 +69,12 @@ public class GameManager : MonoBehaviour
         player.GetComponent<Player>().Reset();
         stageGenerator.Initialize();
         GameState = GameState.Playing;
-        score = 0;
-
+        Init();
     }
 
     public float calcPlayerDistance()
     {
-        return player.transform.position.x - 0;
+        return Mathf.Max(player.transform.position.x - playerStartPos, 0);
     }
 
     public (int score, float distance) getBestValues()
@@ -93,6 +97,7 @@ public class GameManager : MonoBehaviour
     
         GameState = GameState.GameOver;
         gameUiController.HideTitle();
+        gameUiController.HideGameUi();
         gameUiController.HideGameOver();
         gameUiController.DisplayGameOver();
         GameState = GameState.GameOver;
@@ -100,17 +105,18 @@ public class GameManager : MonoBehaviour
         var bestValues = getBestValues();
         var distance = calcPlayerDistance();
         
-        gameUiController.SetScoreTextForGameOverUi(score);
+        gameUiController.SetScoreTextForGameOverUi(finalScore);
         gameUiController.SetBestScoreTextForGameOverUi(bestValues.score);
         gameUiController.SetDistanceTextForGameOverUi(distance);
         gameUiController.SetBestDistanceTextForGameOverUi(bestValues.distance);
 
-        SetBestValues(Math.Max(bestValues.score, score), Math.Max(bestValues.distance, distance));
-        
-        UnityroomApiClient.Instance.SendScore(1, bestValues.score, ScoreboardWriteMode.HighScoreDesc);
+        SetBestValues(Math.Max(bestValues.score, finalScore), Math.Max(bestValues.distance, distance));
     }
-    
- 
+
+    private void UpdateFinalScore()
+    {
+        finalScore = score + (int)calcPlayerDistance();
+    }
     
     private void UpdateTime()
     {
@@ -122,6 +128,7 @@ public class GameManager : MonoBehaviour
         if (GameState == GameState.Playing)
         {
             UpdateTime();
+            UpdateFinalScore();
         }
     }
 
