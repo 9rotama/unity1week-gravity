@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using KanKikuchi.AudioManager;
 using UnityEngine;
 
 public class Star : ObjectPart
 {
     [SerializeField] int point;
+    [SerializeField] private GameObject getParticle;
 
     static GameManager gameManager;
 
@@ -19,6 +21,8 @@ public class Star : ObjectPart
     public override void OnCollisionWithPlayer(Player player)
     {
         gameManager.IncreaseScore(point);
+        GameObject particleObj =Instantiate(getParticle);
+        particleObj.transform.position = transform.position;
 
         //画面外に移動
         transform.position = Vector2.left * 20;
