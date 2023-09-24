@@ -8,4 +8,5 @@ public enum StageObjectType
     SmallStarItem,
     MiddleStarItem,
     LargeStarItem,
+    TouchGameOver
 }
