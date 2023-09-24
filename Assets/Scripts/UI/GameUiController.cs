@@ -16,6 +16,7 @@ public class GameUiController : MonoBehaviour
     {
         startButton.GetComponent<Button>().onClick.AddListener(gameManager.GameStart);
         returnTitleButton.GetComponent<Button>().onClick.AddListener(gameManager.Title);
+        retryButton.GetComponent<Button>().onClick.AddListener(gameManager.GameStart);
         gameOver.SetActive(false);
     }
 

@@ -64,7 +64,6 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        // Debug.Log(GameState);
         if (GameState == GameState.Playing)
         {
             UpdateTime();
