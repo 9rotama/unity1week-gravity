@@ -68,8 +68,7 @@ public class GameManager : MonoBehaviour
         player.GetComponent<Player>().Reset();
         stageGenerator.Initialize();
         GameState = GameState.Playing;
-        score = 0;
-
+        Init();
     }
 
     public float calcPlayerDistance()
@@ -86,7 +85,7 @@ public class GameManager : MonoBehaviour
     
     public void SetBestValues(int score, float distance)
     {
-         PlayerPrefs.SetInt("bestScore", finalScore);
+         PlayerPrefs.SetInt("bestScore", score);
          PlayerPrefs.SetFloat("bestDistance", distance);
     }
 
