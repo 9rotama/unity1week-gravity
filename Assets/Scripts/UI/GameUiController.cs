@@ -9,6 +9,9 @@ public class GameUiController : MonoBehaviour
     [SerializeField] private GameObject startButton;
     [SerializeField] private GameObject gameOver;
     [SerializeField] private Text scoreText;
+    [SerializeField] private Text bestScoreText;
+    [SerializeField] private Text distanceText;
+    [SerializeField] private Text bestDistanceText;
     [SerializeField] private GameObject retryButton;
     [SerializeField] private GameObject returnTitleButton;
     [SerializeField] private GameManager gameManager;
@@ -51,6 +54,19 @@ public class GameUiController : MonoBehaviour
 
     public void SetScoreTextForGameOverUi(int score)
     {
-        scoreText.text = "SCORE: " + score;
+        scoreText.text = score.ToString();
+    }
+    public void SetBestScoreTextForGameOverUi(int score)
+    {
+        bestScoreText.text = "BEST: " + score;
+    }
+    
+    public void SetDistanceTextForGameOverUi(float distance)
+    {
+        distanceText.text = distance.ToString("F2");
+    }
+    public void SetBestDistanceTextForGameOverUi(float distance)
+    {
+        bestDistanceText.text = "BEST: " + distance.ToString("F2");
     }
 }
