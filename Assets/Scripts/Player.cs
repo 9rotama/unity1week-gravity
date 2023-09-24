@@ -22,8 +22,8 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private const float power = 10f;
     public bool isGravityUpward;
-    private const float outStageRangeUpper = 6.5f;
-    private const float outStageRangeLower = -6.5f;
+    private const float outStageRangeUpper = 9f;
+    private const float outStageRangeLower = -9f;
     private bool isGameOverFunctionExecuted;
     public bool IsFloating = false;
     private SpriteRenderer spriteRenderer;  
@@ -76,13 +76,14 @@ public class Player : MonoBehaviour
     
     private void SetGravity()
     {
-        rb.gravityScale = isGravityUpward ? -6 : 6;
+        rb.gravityScale = isGravityUpward ? -3 : 3;
     }
     private void ChangeGravity()
     {
         isGravityUpward = !isGravityUpward;
         SetGravity();
         SEManager.Instance.Play(SEPath.CHANGE_GRAVITY);
+        rb.velocity = new Vector2(rb.velocity.x, 0);
         IsFloating = true;
     }
 

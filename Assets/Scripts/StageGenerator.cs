@@ -131,7 +131,7 @@ public class StageGenerator : MonoBehaviour
             }
 
             // TouchGameOverの生成
-            const int generationProb = 5;
+            const int generationProb = 1;
             const int remainingCount = 4;
             if( gameManager.GameState == GameState.Playing
                 && prevCurrentNthList.Count >= remainingCount 
