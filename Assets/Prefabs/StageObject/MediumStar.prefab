@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   point: 30
+  getParticle: {fileID: 4143197190250918613, guid: 030672173cd8ea84bb9513ab5f1acf29, type: 3}
 --- !u!114 &3571193851258010111
 MonoBehaviour:
   m_ObjectHideFlags: 0

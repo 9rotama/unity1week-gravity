@@ -20,6 +20,12 @@ public class GameManager : MonoBehaviour
         BGMManager.Instance.FadeIn(BGMPath.TITLE);
     }
 
+    private void Init()
+    {
+        score = 0;
+        elapsedTimeFromStart = 0;
+    }
+
     public void Title()
     {
         BGMManager.Instance.FadeOut(BGMPath.PLAY_BGM);
@@ -31,6 +37,7 @@ public class GameManager : MonoBehaviour
         GameState = GameState.Ready;
         player.GetComponent<Player>().Reset();
         stageGenerator.Initialize();
+        Init();
     }
 
     public void GameStart()
@@ -42,6 +49,7 @@ public class GameManager : MonoBehaviour
         gameUiController.HideGameOver();;
         gameUiController.DisplayGameUi();
         GameState = GameState.Playing;
+        Init();
     }
 
     public void Retry()
@@ -55,6 +63,26 @@ public class GameManager : MonoBehaviour
         player.GetComponent<Player>().Reset();
         stageGenerator.Initialize();
         GameState = GameState.Playing;
+        score = 0;
+
+    }
+
+    public float calcPlayerDistance()
+    {
+        return player.transform.position.x - 0;
+    }
+
+    public (int score, float distance) getBestValues()
+    {
+        var score = PlayerPrefs.GetInt("bestScore", 0);
+        var distance = PlayerPrefs.GetFloat("bestDistance", 0);
+        return (score, distance);
+    }
+    
+    public void SetBestValues(int score, float distance)
+    {
+         PlayerPrefs.SetInt("bestScore", score);
+         PlayerPrefs.SetFloat("bestDistance", distance);
     }
 
     public void playerOutStage()
@@ -68,7 +96,18 @@ public class GameManager : MonoBehaviour
         gameUiController.DisplayGameOver();
         GameState = GameState.GameOver;
 
+        var bestValues = getBestValues();
+        var distance = calcPlayerDistance();
+        
+        gameUiController.SetScoreTextForGameOverUi(score);
+        gameUiController.SetBestScoreTextForGameOverUi(bestValues.score);
+        gameUiController.SetDistanceTextForGameOverUi(distance);
+        gameUiController.SetBestDistanceTextForGameOverUi(bestValues.distance);
+
+        SetBestValues(Math.Max(bestValues.score, score), Math.Max(bestValues.distance, distance));
     }
+    
+ 
     
     private void UpdateTime()
     {
