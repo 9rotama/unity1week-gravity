@@ -88,6 +88,9 @@ public class GameManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("bestScore", score);
         PlayerPrefs.SetFloat("bestDistance", distance);
+
+        UnityroomApiClient.Instance.SendScore(1, score, ScoreboardWriteMode.HighScoreDesc);
+        UnityroomApiClient.Instance.SendScore(2, distance, ScoreboardWriteMode.HighScoreDesc);
     }
 
     public void playerOutStage()
