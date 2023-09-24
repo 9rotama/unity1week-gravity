@@ -76,7 +76,7 @@ public class Player : MonoBehaviour
     
     private void SetGravity()
     {
-        rb.gravityScale = isGravityUpward ? -6 : 6;
+        rb.gravityScale = isGravityUpward ? -3 : 3;
     }
     private void ChangeGravity()
     {
