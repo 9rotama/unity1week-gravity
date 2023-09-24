@@ -5,6 +5,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using System.Linq;
+using Random = UnityEngine.Random;
 using GenerationList = System.Collections.Generic.List<(StageObjectType type, int nth, float rotationZ)>;
 
 public class StageGenerator : MonoBehaviour
@@ -31,7 +32,7 @@ public class StageGenerator : MonoBehaviour
 
 
     // 地面の生成間隔
-    float groundInterval; 
+    const float groundInterval = 1.3f; 
 
     // 生成位置の基準値
     int generationBaseValue = -30;
@@ -48,7 +49,7 @@ public class StageGenerator : MonoBehaviour
     void Start()
     {
 
-        // ステージオブジェクトの生成、配列に代入
+        // ステージオブジェクトの生成、配列に代入。生成個数の決定
         stageObjectsMap[StageObjectType.SimpleBlock] = new StageObject[100];
         stageObjectsMap[StageObjectType.SplinterUpBlock] = new StageObject[50];
         stageObjectsMap[StageObjectType.SplinterUpDownBlock] = new StageObject[20];
@@ -57,6 +58,7 @@ public class StageGenerator : MonoBehaviour
         stageObjectsMap[StageObjectType.SmallStarItem] = new StageObject[20];
         stageObjectsMap[StageObjectType.MiddleStarItem] = new StageObject[20];
         stageObjectsMap[StageObjectType.LargeStarItem] = new StageObject[20];
+        stageObjectsMap[StageObjectType.TouchGameOver] = new StageObject[10];
         
 
         foreach(StageObjectType type in Enum.GetValues(typeof(StageObjectType))) {
@@ -70,7 +72,7 @@ public class StageGenerator : MonoBehaviour
         }
 
         // ステージの生成方法の初期化
-        blockGenerationStrategyMap.Add(BlockGenerationType.ParallelEdge, new BlockGenerationParallelEdge());
+        blockGenerationStrategyMap.Add(BlockGenerationType.Parallel, new BlockGenerationParallel());
         blockGenerationStrategyMap.Add(BlockGenerationType.Stairs, new BlockGenerationStairs());
         blockGenerationStrategyMap.Add(BlockGenerationType.Line, new BlockGenerationLine());
 
@@ -81,7 +83,7 @@ public class StageGenerator : MonoBehaviour
 
 
         // シンプルなブロックのサイズに合わせる
-        groundInterval = stageObjectOverview[(int)StageObjectType.SimpleBlock].objectSize.x;
+        // groundInterval = stageObjectOverview[(int)StageObjectType.SimpleBlock].objectSize.x;
 
         Initialize();
     }
@@ -120,20 +122,27 @@ public class StageGenerator : MonoBehaviour
 
             var generationList = blockGenerationStrategyMap[blockGenerationType].GetGenerationList();
 
-            //詰み回避
-            //前後の生成リストの座標に1からlimitBlockSizeが存在したら現在のリストを書き換える
-            int limitBlockSize = 8;
-            var nthList = Enumerable.Range(1, limitBlockSize).ToList();
-            foreach(var l in prevList.Concat(generationList)){
-                var nth = l.nth <= -1 ? l.nth + limitBlockSize + 1 : l.nth;
-                nthList.Remove(nth);
-            }
+            var prevCurrentNthList = GetNthNotContainedInGenerationList(prevList.Concat(generationList).ToList());
 
-            if(nthList.Count == 0){
+            // 詰み回避
+            // 前と現在の生成リストの番目が全て埋まっていたら現在のリストを書き換え
+            if(prevCurrentNthList.Count == 0){
                 generationList = new GenerationList(){
-                    (StageObjectType.SimpleBlock, -1 ,0)
+                    (StageObjectType.SimpleBlock, Common.TrueOrFalse() ? 1 : -1 ,0)
                 };
             }
+
+            // TouchGameOverの生成
+            const int generationProb = 5;
+            const int remainingCount = 4;
+            if( gameManager.GameState == GameState.Playing
+                && prevCurrentNthList.Count >= remainingCount 
+                && Random.Range(1, 101) <= generationProb) {
+                generationList.Add((
+                    StageObjectType.TouchGameOver, Common.GetRandom(prevCurrentNthList), 0
+                ));
+            }
+
             prevList = new GenerationList(generationList);
 
             // アイテムの生成リストも追加
@@ -165,8 +174,8 @@ public class StageGenerator : MonoBehaviour
                 blockGeneration.Initialize();
 
                 if(gameManager.GameState == GameState.Ready) {
-                    blockGenerationType = BlockGenerationType.ParallelEdge;
-                    blockGenerationStrategyMap[blockGenerationType] = new BlockGenerationParallelEdge(_hasSplinter : false);
+                    blockGenerationType = BlockGenerationType.Parallel;
+                    blockGenerationStrategyMap[blockGenerationType] = new BlockGenerationParallel(_hasSplinter : false);
                 }
 
             }
@@ -198,5 +207,17 @@ public class StageGenerator : MonoBehaviour
         stageObjectsMap[type][index].transform.position = pos;
         stageObjectsMap[type][index].transform.rotation = Quaternion.Euler(0, 0, rotationZ);
 
+    }
+
+    // 生成リストに含まれない番目を返す
+    List<int> GetNthNotContainedInGenerationList(GenerationList generationList) {
+        const int limitBlockSize = 8;
+        var nthList = Enumerable.Range(1, limitBlockSize).ToList();
+        foreach(var l in generationList){
+        var nth = l.nth <= -1 ? l.nth + limitBlockSize + 1 : l.nth;
+            nthList.Remove(nth);
+        }
+
+        return nthList;
     }
 }

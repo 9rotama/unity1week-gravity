@@ -3,23 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
-
+using Random = UnityEngine.Random;
 using GenerationList = System.Collections.Generic.List<(StageObjectType type, int nth, float rotationZ)>;
+using Unity.Burst.Intrinsics;
 
-public class BlockGenerationParallelEdge : GenerationStrategy<BlockGenerationType>
+public class BlockGenerationParallel : GenerationStrategy<BlockGenerationType>
 {
-    bool hasSplinter;
 
     BlockGenerationLine topLine = new BlockGenerationLine();
     BlockGenerationLine bottomLine = new BlockGenerationLine();
 
 
-    public BlockGenerationParallelEdge() : base(3) {}
+    public BlockGenerationParallel() : base(3) {}
 
-    public BlockGenerationParallelEdge(bool _hasSplinter) : base(3) {
-        hasSplinter = _hasSplinter;
-        topLine = new BlockGenerationLine(numColumn, false, 1, 0);
-        bottomLine = new BlockGenerationLine(numColumn, false, -1, 0);
+    public BlockGenerationParallel(bool _hasSplinter) : base(3) {
+        topLine = new BlockGenerationLine(numColumn, _hasSplinter, 1, 0);
+        bottomLine = new BlockGenerationLine(numColumn, _hasSplinter, -1, 0);
     }
 
     public override GenerationList GetGenerationList()
@@ -36,11 +35,16 @@ public class BlockGenerationParallelEdge : GenerationStrategy<BlockGenerationTyp
     public override void Initialize()
     {
         base.Initialize();
-        numColumn = UnityEngine.Random.Range(5, 10);
+        numColumn = Random.Range(3, 7);
 
-        topLine = new BlockGenerationLine(numColumn, Common.TrueOrFalse(), 1, 180f);
+        bool hasSplinter = Common.TrueOrFalse();
+        var topNth = 1;
+        var bottomNth = -1;
 
-        bottomLine = new BlockGenerationLine(numColumn, Common.TrueOrFalse(), -1, 0);
+
+
+        topLine = new BlockGenerationLine(numColumn, hasSplinter, topNth, 180f);
+        bottomLine = new BlockGenerationLine(numColumn, !hasSplinter, bottomNth, 0);
     }
 
 

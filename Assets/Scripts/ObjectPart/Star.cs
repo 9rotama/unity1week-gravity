@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using KanKikuchi.AudioManager;
 using UnityEngine;
+using KanKikuchi.AudioManager;
 
 public class Star : ObjectPart
 {
@@ -21,12 +22,15 @@ public class Star : ObjectPart
     public override void OnCollisionWithPlayer(Player player)
     {
         gameManager.IncreaseScore(point);
+
         GameObject particleObj =Instantiate(getParticle);
         particleObj.transform.position = transform.position;
 
+        SEManager.Instance.Play(SEPath.SCORE_ITEM);
+
+
         //画面外に移動
         transform.position = Vector2.left * 20;
-        Debug.Log("ポイントゲットだぜ");
     }
 
 

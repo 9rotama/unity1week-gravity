@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 304865139274343288}
   - component: {fileID: 8032557859606593057}
   - component: {fileID: 725278402242332215}
+  - component: {fileID: -8290006888860470859}
   m_Layer: 0
   m_Name: TouchGameOver
   m_TagString: Untagged
@@ -162,6 +163,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 348cc0aedb00ef040b379128ac4c5a83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-8290006888860470859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304865139274343291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be56a54a2897d4912871783730f04af5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &304865139555943511
